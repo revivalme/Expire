@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+
+	<title>Срок годности</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div>
+				<h1>Срок годности 2018</h1>
+				<hr>
+				<form>
+					<div class="form-group">
+						<label for="item">Название:</label>
+						<select class="selectpicker w-100" data-live-search="true" id="item">
+							<optgroup label="Соки" data-type="juice">
+								<option>Вико Яблоко</option>
+								<option>Долина</option>
+								<option>Вико Вишня</option>
+							</optgroup>
+							<optgroup label="Напитки" data-type="drinks">
+								<option>Fanta</option>
+								<option>CocaCola</option>
+								<option>FuzeTea Лесные ягоды</option>
+							</optgroup>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="volume">Объем:</label>
+						<select class="selectpicker w-100" data-live-search="true" id="volume">
+							<option>2</option>
+							<option>1.75</option>
+							<option>1.5</option>
+							<option>1.25</option>
+							<option>1</option>
+							<option>0.9</option>
+							<option>0.5</option>
+							<option>0.33</option>
+							<option>0.25</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="expire">Дата истечения:</label>
+						<input type="text" class="form-control mb-3" id="expire" required>
+					</div>			
+					<button type="submit" class="btn btn-success m-10 w-100" id="submit">Добавить</button>
+				</form>
+
+				<hr>
+
+				<div id="menu">
+					<div class="panel list-group">
+						<a class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#july" data-parent="#menu">Июль <span class="badge badge-danger">0</span></a>
+						<div id="july" class="collapse">
+							<a class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#juice" data-parent="#sm">Соки <span class="badge badge-danger" id="juiceCounter">0</span></a>
+							<div id="juice" class="collapse"></div>
+							<a class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#drinks" data-parent="#sm">Напитки <span class="badge badge-danger">0</span></a>
+							<div id="drinks" class="collapse">
+								<a class="list-group-item list-group-item-warning d-flex justify-content-between align-items-center">Name<span class="badge badge-secondary">expire</span></a>
+							</div>
+						</div>
+	
+						<a class="list-group-item d-flex justify-content-between align-items-center">Август <span class="badge badge-info">13</span></a>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyB_17C695P9q4LtAGeDpXjTB4Knaq9Oiw4",
+			authDomain: "expire-date-ef1e3.firebaseapp.com",
+			databaseURL: "https://expire-date-ef1e3.firebaseio.com",
+			projectId: "expire-date-ef1e3",
+			storageBucket: "expire-date-ef1e3.appspot.com",
+			messagingSenderId: "1065023939225"
+		};
+		firebase.initializeApp(config);
+	</script>
+	<script src="js/es6.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>	
+</body>
+</html>
