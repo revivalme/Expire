@@ -2,7 +2,7 @@
   <v-container fluid mt-5>
     <v-layout row wrap mt-5>
       <v-flex xs12 class="text-xs-center" mt-5>
-        <h1>Добро пожаловать в NetenNote</h1>
+        <h1>Добро пожаловать в Expire</h1>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
         <blockquote class="blockquote text-xs-center">

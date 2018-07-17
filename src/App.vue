@@ -58,7 +58,7 @@
   export default {
     data () {
       return {
-        appTitle: 'NetenNote',
+        appTitle: 'Expire',
         sidebar: false
       }
     },
