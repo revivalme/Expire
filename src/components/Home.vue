@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import Expire from '@/components/Expire'
 import ListsNote from '@/components/ListsNote'
 import AddNote from '@/components/AddNote'
 
@@ -15,7 +16,7 @@ export default {
       lists: [],
       listsCheckBool: false,
       favorite: 'Привет',
-      homeComponent: ListsNote
+      homeComponent: Expire
     }
   },
   components: {
