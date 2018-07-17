@@ -1,6 +1,11 @@
-# toolnote
+# Expire
 
-> A Vue.js project
+> A Vue.js (Vuetify UI) && firebase project
+> https://neten-40082.firebaseapp.com/
+
+## Description
+
+Веб приложение, созданное для упрощения работы с учетом срока годности.
 
 ## Build Setup
 
@@ -17,4 +22,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
