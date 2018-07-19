@@ -116,7 +116,8 @@ export default {
         {name: 'CocaCola', date: '13.11.18', volume: '0.5л'},
         {name: 'FuzeTea Лесные ягоды', date: '14.01.19', volume: '1л'}
       ],
-      products: []
+      products: [],
+      productsFilter:
     }
   },
   created () {
@@ -130,16 +131,38 @@ export default {
       console.log('Error getting documents', err)
     })
   },
+  computed: {
+    productsFilter () {
+      let filterArr = this.products.map((product) => {
+        // изменяем формат dd.mm.yy => yyyy.mm.dd
+        let d, m, y, date
+        d = product.date[0] + product.date[1]
+        m = product.date[3] + product.date[4]
+        y = '20' + product.date[7] + product.date[8]
+        date = Date.parse(`${y}.${m}.${d}`)
+        return date
+      })
+      console.log(`${filterArr}`)
+    }
+  },
   methods: {
     submit () {
-      if (this.volume && this.name && this.expirationDate) {
+      if (this.volume && this.name && this.expirationDate.length === 8) {
+        let addDate = new Date()
+
         this.db.collection('beverages').add({
           expirationDate: this.expirationDate,
           name: this.name,
           volume: this.volume,
-          addDate: new Date()
+          addDate: addDate
         })
         .then((docRef) => {
+          this.products.push({
+            expirationDate: this.expirationDate,
+            name: this.name,
+            volume: this.volume,
+            addDate: addDate
+          })
           this.expirationDate = null
           this.name = null
           this.volume = null
