@@ -1,5 +1,6 @@
 <template lang="html">
   <v-layout align-space-around justify-center wrap row>
+    <delete-product v-if="deleteBoolProp" @dialog-delete="onDialogDelete" :delete-product="deleteBoolProp"></delete-product>
     <v-layout justify-center>
       <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
         <v-card color="white" height="25rem">
@@ -96,7 +97,7 @@
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-btn icon ripple @click="deleteTwo(item.id)" :disabled="!valid">
+                <v-btn icon ripple @click="dialogHelpComponent(item.id)" :disabled="!valid">
                   <v-icon color="grey lighten-1">clear</v-icon>
                 </v-btn>
               </v-list-tile-action>
@@ -109,6 +110,8 @@
 </template>
 
 <script>
+import deleteProduct from './Dialogs/deleteProduct'
+
 export default {
   data () {
     return {
@@ -126,8 +129,13 @@ export default {
       date: null,
       dateFormatted: null,
       menu1: false,
-      menu2: false
+      menu2: false,
+      deleteBoolProp: false,
+      idProductItem: ''
     }
+  },
+  components: {
+    deleteProduct
   },
   created () {
     this.db.collection('beverages').get()
@@ -215,10 +223,21 @@ export default {
         }
       })
     },
-    deleteTwo (id) {
-      this.db.collection('beverages').doc(id).delete()
+    dialogHelpComponent (id) {
+      this.deleteBoolProp = true
+      this.idProductItem = id
+    },
+    onDialogDelete (deleteBool) {
+      console.log(deleteBool)
+      if (deleteBool === true) {
+        this.deleteTwo()
+      }
+      this.deleteBoolProp = false
+    },
+    deleteTwo () {
+      this.db.collection('beverages').doc(this.idProductItem).delete()
       this.products.forEach((product, index) => {
-        if (product.id === id) {
+        if (product.id === this.idProductItem) {
           this.products.splice(index, 1)
         }
       })
