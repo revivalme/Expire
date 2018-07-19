@@ -68,15 +68,15 @@
         <v-list two-line subheader>
           <v-subheader>Просрочено</v-subheader>
           <v-card>
-            <v-list-tile v-for="item in items" :key="item.title">
+            <v-list-tile v-for="item in items" :key="item.id">
 
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ item.date }} | {{item.volume}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{ item.expirationDate }} | {{item.volume}}</v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-btn icon ripple @click="deleteOne">
+                <v-btn icon ripple @click="deleteOne(item.id)">
                   <v-icon color="grey lighten-1">clear</v-icon>
                 </v-btn>
               </v-list-tile-action>
@@ -88,15 +88,15 @@
           <v-card>
             <v-list-tile
               v-for="item in items2"
-              :key="item.title"
+              :key="item.id"
             >
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                <v-list-tile-sub-title> {{ item.date }} | {{item.volume}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title> {{ item.expirationDate }} | {{item.volume}}</v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-btn icon ripple @click="deleteTwo" :disabled="!valid">
+                <v-btn icon ripple @click="deleteTwo(item.id)" :disabled="!valid">
                   <v-icon color="grey lighten-1">clear</v-icon>
                 </v-btn>
               </v-list-tile-action>
@@ -122,15 +122,6 @@ export default {
         v => !!v || 'Заполните поле',
         v => (v && v.length === 8) || 'Должно быть 8 символов'
       ],
-      items: [
-        {name: 'Вико Яблоко', date: '09.04.18', volume: '2л'},
-        {name: 'Вико Вишня', date: '21.05.18', volume: '0.5л'},
-        {name: 'Долина', date: '18.01.18', volume: '0.33л'}
-      ],
-      items2: [
-        {name: 'CocaCola', date: '13.11.18', volume: '0.5л'},
-        {name: 'FuzeTea Лесные ягоды', date: '14.01.19', volume: '1л'}
-      ],
       products: [],
       date: null,
       dateFormatted: null,
@@ -142,7 +133,9 @@ export default {
     this.db.collection('beverages').get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
-        this.products.push(doc.data())
+        let localproducts = doc.data()
+        localproducts.id = doc.id
+        this.products.push(localproducts)
       })
     })
     .catch((err) => {
@@ -152,6 +145,20 @@ export default {
   computed: {
     computedDateFormatted () {
       return this.formatDate(this.date)
+    },
+    items () {
+      return this.products.filter((product) => {
+        let dateNow = Date.parse(new Date())
+        let dateExpire = Date.parse(`${product.expirationDate}`)
+        return dateNow > dateExpire
+      })
+    },
+    items2 () {
+      return this.products.filter((product) => {
+        let dateNow = Date.parse(new Date())
+        let dateExpire = Date.parse(`${product.expirationDate}`)
+        return dateNow < dateExpire
+      })
     }
   },
   watch: {
@@ -187,7 +194,8 @@ export default {
             expirationDate: this.computedDateFormatted,
             name: this.name,
             volume: this.volume,
-            addDate: addDate
+            addDate: addDate,
+            id: docRef.id
           })
           this.date = null
           this.name = null
@@ -199,11 +207,21 @@ export default {
         })
       }
     },
-    deleteOne () {
-      console.log('lol')
+    deleteOne (id) {
+      this.db.collection('beverages').doc(id).delete()
+      this.products.forEach((product, index) => {
+        if (product.id === id) {
+          this.products.splice(index, 1)
+        }
+      })
     },
-    deleteTwo () {
-      console.log('lol')
+    deleteTwo (id) {
+      this.db.collection('beverages').doc(id).delete()
+      this.products.forEach((product, index) => {
+        if (product.id === id) {
+          this.products.splice(index, 1)
+        }
+      })
     }
   }
 }
