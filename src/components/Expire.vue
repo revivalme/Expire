@@ -28,13 +28,28 @@
               </v-flex>
 
               <v-flex>
-                <v-text-field
-                  counter="8"
-                  label="Дата истечения..."
-                  :rules="dateRules"
-                  v-model="expirationDate"
-                  required
-                ></v-text-field>
+                <v-menu
+                  :close-on-content-click="false"
+                  v-model="menu2"
+                  :nudge-right="40"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <v-text-field
+                    slot="activator"
+                    v-model="computedDateFormatted"
+                    label="Выберите дату"
+                    hint="дд/мм/ггг"
+                    persistent-hint
+                    prepend-icon="event"
+                    readonly
+                  ></v-text-field>
+                  <v-date-picker v-model="date" no-title @input="menu2 = false"></v-date-picker>
+                </v-menu>
               </v-flex>
 
               <v-flex xs4 mb-2 mt-3 ml-3>
@@ -117,7 +132,10 @@ export default {
         {name: 'FuzeTea Лесные ягоды', date: '14.01.19', volume: '1л'}
       ],
       products: [],
-      productsFilter:
+      date: null,
+      dateFormatted: null,
+      menu1: false,
+      menu2: false
     }
   },
   created () {
@@ -132,38 +150,46 @@ export default {
     })
   },
   computed: {
-    productsFilter () {
-      let filterArr = this.products.map((product) => {
-        // изменяем формат dd.mm.yy => yyyy.mm.dd
-        let d, m, y, date
-        d = product.date[0] + product.date[1]
-        m = product.date[3] + product.date[4]
-        y = '20' + product.date[7] + product.date[8]
-        date = Date.parse(`${y}.${m}.${d}`)
-        return date
-      })
-      console.log(`${filterArr}`)
+    computedDateFormatted () {
+      return this.formatDate(this.date)
+    }
+  },
+  watch: {
+    date (val) {
+      this.dateFormatted = this.formatDate(this.date)
     }
   },
   methods: {
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${month}/${day}/${year}`
+    },
+    parseDate (date) {
+      if (!date) return null
+
+      const [month, day, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    },
     submit () {
-      if (this.volume && this.name && this.expirationDate.length === 8) {
+      if (this.volume && this.name && this.computedDateFormatted) {
         let addDate = new Date()
 
         this.db.collection('beverages').add({
-          expirationDate: this.expirationDate,
+          expirationDate: this.computedDateFormatted,
           name: this.name,
           volume: this.volume,
           addDate: addDate
         })
         .then((docRef) => {
           this.products.push({
-            expirationDate: this.expirationDate,
+            expirationDate: this.computedDateFormatted,
             name: this.name,
             volume: this.volume,
             addDate: addDate
           })
-          this.expirationDate = null
+          this.date = null
           this.name = null
           this.volume = null
           console.log('Document written with ID: ', docRef.id)
