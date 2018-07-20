@@ -89,7 +89,7 @@ export default {
     },
     alert (value) {
       if (!value) {
-        this.$store.commit('setError', null)
+        this.$store.commit('SET_ERROR', null)
       }
     }
   }

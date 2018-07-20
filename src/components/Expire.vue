@@ -5,8 +5,13 @@
       <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
         <v-card color="white" height="25rem">
           <v-layout column align-center justify-space-around>
+            <router-link to="/productsAdd" tag="span">
+              <v-btn icon ripple>
+                <v-icon medium color="grey darken-1"> add_circle_outline </v-icon>
+              </v-btn>
+            </router-link>
             <v-form>
-              <v-flex mt-5>
+              <v-flex mt-3>
                 <v-autocomplete
                   label="Название"
                   :rules="[() => !!name || 'Заполните поле']"
@@ -44,12 +49,12 @@
                     slot="activator"
                     v-model="computedDateFormatted"
                     label="Выберите дату"
-                    hint="дд/мм/ггг"
+                    hint="дд/мм/гггг"
                     persistent-hint
                     prepend-icon="event"
                     readonly
                   ></v-text-field>
-                  <v-date-picker v-model="date" no-title @input="menu2 = false"></v-date-picker>
+                  <v-date-picker v-model="date" locale="ru-Latn" no-title @input="menu2 = false"></v-date-picker>
                 </v-menu>
               </v-flex>
 
@@ -84,7 +89,7 @@
 
             </v-list-tile>
           </v-card>
-          <v-divider inset></v-divider>
+          <v-divider></v-divider>
           <v-subheader>Остальные</v-subheader>
           <v-card>
             <v-list-tile
@@ -117,7 +122,7 @@ export default {
     return {
       volumes: ['2л', '1.75л', '1.5л', '1.25л', '1л', '0.9л', '0.5л', '0.33л', '0.25л'],
       volume: null,
-      names: ['Вико Яблоко', 'Вико Вишня', 'Долина', 'Fanta', 'CocaCola', 'FuzeTea Лесные ягоды'],
+      names: [],
       name: null,
       expirationDate: null,
       valid: true,
@@ -138,12 +143,23 @@ export default {
     deleteProduct
   },
   created () {
-    this.db.collection('beverages').get()
+    this.db.collection('department-1-1').get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         let localproducts = doc.data()
         localproducts.id = doc.id
         this.products.push(localproducts)
+      })
+    })
+    .catch((err) => {
+      console.log('Error getting documents', err)
+    })
+
+    this.db.collection('namesProducts-1-1').get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        let localname = doc.data()
+        this.names.push(localname.name)
       })
     })
     .catch((err) => {
@@ -191,7 +207,7 @@ export default {
       if (this.volume && this.name && this.computedDateFormatted) {
         let addDate = new Date()
 
-        this.db.collection('beverages').add({
+        this.db.collection('department-1-1').add({
           expirationDate: this.computedDateFormatted,
           name: this.name,
           volume: this.volume,
@@ -216,7 +232,7 @@ export default {
       }
     },
     deleteOne (id) {
-      this.db.collection('beverages').doc(id).delete()
+      this.db.collection('department-1-1').doc(id).delete()
       this.products.forEach((product, index) => {
         if (product.id === id) {
           this.products.splice(index, 1)
@@ -235,7 +251,7 @@ export default {
       this.deleteBoolProp = false
     },
     deleteTwo () {
-      this.db.collection('beverages').doc(this.idProductItem).delete()
+      this.db.collection('department-1-1').doc(this.idProductItem).delete()
       this.products.forEach((product, index) => {
         if (product.id === this.idProductItem) {
           this.products.splice(index, 1)
