@@ -5,11 +5,18 @@
       <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
         <v-card color="white" height="25rem">
           <v-layout column align-center justify-space-around>
-            <router-link to="/productsAdd" tag="span">
-              <v-btn icon ripple>
-                <v-icon medium color="grey darken-1"> add_circle_outline </v-icon>
-              </v-btn>
-            </router-link>
+            <v-layout row>
+              <router-link to="/productsadd" tag="span">
+                <v-btn icon ripple>
+                  <v-icon medium color="grey darken-1"> add_circle_outline </v-icon>
+                </v-btn>
+              </router-link>
+              <router-link to="/productsreturn" tag="span">
+                <v-btn icon ripple>
+                  <v-icon medium color="grey darken-1"> replay </v-icon>
+                </v-btn>
+              </router-link>
+            </v-layout>
             <v-form>
               <v-flex mt-3>
                 <v-autocomplete
@@ -236,6 +243,7 @@ export default {
       this.products.forEach((product, index) => {
         if (product.id === id) {
           this.products.splice(index, 1)
+          this.addInReturnComp(product)
         }
       })
     },
@@ -255,8 +263,13 @@ export default {
       this.products.forEach((product, index) => {
         if (product.id === this.idProductItem) {
           this.products.splice(index, 1)
+          this.addInReturnComp(product)
         }
       })
+    },
+    addInReturnComp (product) {
+      product.deleteDate = new Date()
+      this.db.collection('productsreturn-1-1').add(product)
     }
   }
 }

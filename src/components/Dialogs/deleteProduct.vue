@@ -3,7 +3,9 @@
     <v-layout row justify-center>
       <v-dialog v-model="deleteProduct" persistent max-width="290">
         <v-card>
-          <v-card-text class="text-md-center headline">Вы точно хотите удалить этот продукт?</v-card-text>
+          <v-card-text class="text-md-center title font-weight-regular">
+            <v-flex mt-3>Вы точно хотите удалить этот продукт?</v-flex>
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red darken-1" flat @click="$emit('dialog-delete', false)">Нет</v-btn>
