@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :dark="boolTheme">
     <v-navigation-drawer v-model="sidebar" app>
       <v-list>
         <v-list-tile
@@ -26,9 +26,16 @@
         </v-toolbar-side-icon>
       </span>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">
-          {{ appTitle }}
-        </router-link>
+        <v-layout row align-center justify-space-between>
+          <v-flex xs12>
+            <router-link to="/" tag="span" style="cursor: pointer">
+              {{ appTitle }}
+            </router-link>
+            <v-btn icon ripple @click="themeFnChange">
+              <v-icon color="grey darken-1"> invert_colors </v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -59,12 +66,26 @@
     data () {
       return {
         appTitle: 'Expire',
-        sidebar: false
+        sidebar: false,
+        boolTheme: false
+      }
+    },
+    mounted () {
+      if (localStorage.boolTheme) {
+        if (localStorage.boolTheme === 'false') {
+          this.boolTheme = false
+        } else {
+          this.boolTheme = true
+        }
       }
     },
     methods: {
       userSignOut () {
         this.$store.dispatch('userSignOut')
+      },
+      themeFnChange () {
+        localStorage.boolTheme = !this.boolTheme
+        this.boolTheme = !this.boolTheme
       }
     },
     computed: {

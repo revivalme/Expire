@@ -1,9 +1,9 @@
 <template lang="html">
   <v-layout align-space-around justify-center wrap row>
-    <delete-product v-if="deleteBoolProp" @dialog-delete="onDialogDelete" :delete-product="deleteBoolProp"></delete-product>
+    <delete-dialog v-if="deleteBoolProp" @dialog-delete="onDialogDelete" :delete-item="deleteBoolProp"></delete-dialog>
     <v-layout justify-center>
       <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
-        <v-card color="white" height="25rem">
+        <v-card height="25rem">
           <v-layout align-center column justify-center>
             <v-layout row justify-center>
               <router-link to="/productsadd" tag="span">
@@ -21,61 +21,55 @@
               </v-btn>
             </v-layout>
             <v-form>
-              <v-flex xs12 mt-3>
-                <v-layout row align-center>
-                  <v-autocomplete v-if="fieldChange"
-                    label="Название"
-                    :rules="[() => !!name || 'Заполните поле']"
-                    :items="names"
-                    v-model="name"
-                    placeholder="Выберите..."
-                    required
-                  ></v-autocomplete>
-
-                  <v-text-field v-else
-                    label="Regular"
-                    v-model="name"
-                  ></v-text-field>
-                </v-layout>
-              </v-flex>
-
-              <v-flex>
-                <v-autocomplete
-                  label="Объём"
-                  :rules="[() => !!volume || 'Заполните поле']"
-                  :items="volumes"
-                  v-model="volume"
+              <v-layout row align-center>
+                <v-autocomplete v-if="fieldChange"
+                  label="Название"
+                  :rules="[() => !!name || 'Заполните поле']"
+                  :items="names"
+                  v-model="name"
                   placeholder="Выберите..."
                   required
                 ></v-autocomplete>
-              </v-flex>
 
-              <v-flex>
-                <v-menu
-                  :close-on-content-click="false"
-                  v-model="menu2"
-                  :nudge-right="40"
-                  lazy
-                  transition="scale-transition"
-                  offset-y
-                  full-width
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <v-text-field
-                    slot="activator"
-                    v-model="computedDateFormatted"
-                    label="Выберите дату"
-                    hint="дд/мм/гггг"
-                    persistent-hint
-                    prepend-icon="event"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker v-model="date" locale="ru-Latn" no-title @input="menu2 = false"></v-date-picker>
-                </v-menu>
-              </v-flex>
+                <v-text-field v-else
+                  label="Regular"
+                  v-model="name"
+                ></v-text-field>
+              </v-layout>
 
-              <v-flex xs12 mb-2 mt-3>
+              <v-autocomplete
+                label="Объём"
+                :rules="[() => !!volume || 'Заполните поле']"
+                :items="volumes"
+                v-model="volume"
+                placeholder="Выберите..."
+                required
+              ></v-autocomplete>
+
+              <v-menu
+                :close-on-content-click="false"
+                v-model="menu2"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                max-width="290px"
+                min-width="290px"
+              >
+                <v-text-field
+                  slot="activator"
+                  v-model="computedDateFormatted"
+                  label="Выберите дату"
+                  hint="дд/мм/гггг"
+                  persistent-hint
+                  prepend-icon="event"
+                  readonly
+                ></v-text-field>
+                <v-date-picker v-model="date" locale="ru-Latn" no-title @input="menu2 = false"></v-date-picker>
+              </v-menu>
+
+              <v-flex mb-2 mt-3>
                 <v-btn dark color="blue" @click="submit">
                   <v-icon left> date_range </v-icon>
                       Добавить
@@ -132,7 +126,7 @@
 </template>
 
 <script>
-import deleteProduct from './Dialogs/deleteProduct'
+import deleteDialog from './Dialogs/deleteDialog'
 
 export default {
   data () {
@@ -158,11 +152,11 @@ export default {
       menu2: false,
       deleteBoolProp: false,
       idProductItem: '',
-      fieldChange: true
+      fieldChange: false
     }
   },
   components: {
-    deleteProduct
+    deleteDialog
   },
   created () {
     this.db.collection('department-1-1').get()

@@ -1,7 +1,7 @@
 <template lang="html">
   <v-app id="inspire">
     <v-layout row justify-center>
-      <v-dialog v-model="deleteProduct" persistent max-width="290">
+      <v-dialog v-model="deleteItem" persistent max-width="290">
         <v-card>
           <v-card-text class="text-md-center title font-weight-regular">
             <v-flex mt-3>Вы точно хотите удалить этот продукт?</v-flex>
@@ -21,7 +21,7 @@
 <script>
 export default {
   props: {
-    deleteProduct: Boolean
+    deleteItem: Boolean
   },
   data () {
     return {
