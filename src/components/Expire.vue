@@ -4,8 +4,8 @@
     <v-layout justify-center>
       <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
         <v-card color="white" height="25rem">
-          <v-layout column align-center justify-space-around>
-            <v-layout row>
+          <v-layout align-center column justify-center>
+            <v-layout row justify-center>
               <router-link to="/productsadd" tag="span">
                 <v-btn icon ripple>
                   <v-icon medium color="grey darken-1"> add_circle_outline </v-icon>
@@ -16,17 +16,27 @@
                   <v-icon medium color="grey darken-1"> replay </v-icon>
                 </v-btn>
               </router-link>
+              <v-btn icon ripple @click="fieldChange = !fieldChange">
+                <v-icon medium color="grey darken-1"> compare_arrows </v-icon>
+              </v-btn>
             </v-layout>
             <v-form>
-              <v-flex mt-3>
-                <v-autocomplete
-                  label="Название"
-                  :rules="[() => !!name || 'Заполните поле']"
-                  :items="names"
-                  v-model="name"
-                  placeholder="Выберите..."
-                  required
-                ></v-autocomplete>
+              <v-flex xs12 mt-3>
+                <v-layout row align-center>
+                  <v-autocomplete v-if="fieldChange"
+                    label="Название"
+                    :rules="[() => !!name || 'Заполните поле']"
+                    :items="names"
+                    v-model="name"
+                    placeholder="Выберите..."
+                    required
+                  ></v-autocomplete>
+
+                  <v-text-field v-else
+                    label="Regular"
+                    v-model="name"
+                  ></v-text-field>
+                </v-layout>
               </v-flex>
 
               <v-flex>
@@ -65,7 +75,7 @@
                 </v-menu>
               </v-flex>
 
-              <v-flex xs4 mb-2 mt-3 ml-3>
+              <v-flex xs12 mb-2 mt-3>
                 <v-btn dark color="blue" @click="submit">
                   <v-icon left> date_range </v-icon>
                       Добавить
@@ -127,7 +137,11 @@ import deleteProduct from './Dialogs/deleteProduct'
 export default {
   data () {
     return {
-      volumes: ['5л', '3л', '2.25л', '2л', '1.93л', '1.75л', '1.5л', '1.25л', '1л', '0.97л', '0.95л', '0.9л', '0.75л', '0.6л', '0.5л', '0.48л', '0.45л', '0.355л', '0.33л', '0.3л', '0.25л', '0.2л'],
+      volumes: [
+        '5л', '3л', '2.25л', '2л', '1.93л', '1.75л', '1.5л', '1.25л',
+        '1л', '0.97л', '0.95л', '0.9л', '0.75л', '0.6л', '0.5л', '0.48л',
+        '0.45л', '0.355л', '0.33л', '0.3л', '0.25л', '0.2л'
+      ],
       volume: null,
       names: [],
       name: null,
@@ -143,7 +157,8 @@ export default {
       menu1: false,
       menu2: false,
       deleteBoolProp: false,
-      idProductItem: ''
+      idProductItem: '',
+      fieldChange: true
     }
   },
   components: {
