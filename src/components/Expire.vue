@@ -3,23 +3,30 @@
     <delete-dialog v-if="deleteBoolProp" @dialog-delete="onDialogDelete" :delete-item="deleteBoolProp"></delete-dialog>
     <v-layout justify-center>
       <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
-        <v-card height="25rem">
+        <v-card height="27rem">
           <v-layout align-center column justify-center>
-            <v-layout row justify-center>
-              <router-link to="/productsadd" tag="span">
-                <v-btn icon ripple>
-                  <v-icon medium color="grey darken-1"> add_circle_outline </v-icon>
+            <v-flex mt-4>
+              <v-layout row justify-center>
+                <router-link to="/productsadd" tag="span">
+                  <v-btn icon ripple>
+                    <v-icon medium color="grey darken-1"> add_circle_outline </v-icon>
+                  </v-btn>
+                </router-link>
+                <router-link to="/productsreturn" tag="span">
+                  <v-btn icon ripple>
+                    <v-icon medium color="grey darken-1"> replay </v-icon>
+                  </v-btn>
+                </router-link>
+                <v-btn icon ripple @click="fieldChange = !fieldChange">
+                  <v-icon medium color="grey darken-1"> compare_arrows </v-icon>
                 </v-btn>
-              </router-link>
-              <router-link to="/productsreturn" tag="span">
-                <v-btn icon ripple>
-                  <v-icon medium color="grey darken-1"> replay </v-icon>
-                </v-btn>
-              </router-link>
-              <v-btn icon ripple @click="fieldChange = !fieldChange">
-                <v-icon medium color="grey darken-1"> compare_arrows </v-icon>
-              </v-btn>
-            </v-layout>
+                <router-link to="/historyproducts" tag="span">
+                  <v-btn icon ripple>
+                    <v-icon medium color="grey darken-1"> assignment </v-icon>
+                  </v-btn>
+                </router-link>
+              </v-layout>
+            </v-flex>
             <v-form>
               <v-layout row align-center>
                 <v-autocomplete v-if="fieldChange"
@@ -201,37 +208,27 @@ export default {
       })
     }
   },
-  watch: {
-    date (val) {
-      this.dateFormatted = this.formatDate(this.date)
-    }
-  },
   methods: {
     formatDate (date) {
       if (!date) return null
 
       const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
-    },
-    parseDate (date) {
-      if (!date) return null
-
-      const [month, day, year] = date.split('/')
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      this.dateFormatted = `${year}.${month}.${day}`
+      return `${day}.${month}.${year}`
     },
     submit () {
-      if (this.volume && this.name && this.computedDateFormatted) {
+      if (this.volume && this.name && this.dateFormatted) {
         let addDate = new Date()
 
         this.db.collection('department-1-1').add({
-          expirationDate: this.computedDateFormatted,
+          expirationDate: this.dateFormatted,
           name: this.name,
           volume: this.volume,
           addDate: addDate
         })
         .then((docRef) => {
           this.products.push({
-            expirationDate: this.computedDateFormatted,
+            expirationDate: this.dateFormatted,
             name: this.name,
             volume: this.volume,
             addDate: addDate,
