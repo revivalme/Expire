@@ -4,7 +4,7 @@
       <v-dialog v-model="deleteItem" persistent max-width="290">
         <v-card>
           <v-card-text class="text-md-center title font-weight-regular">
-            <v-flex mt-3>Вы точно хотите удалить этот продукт?</v-flex>
+            <v-flex mt-3>Вы точно хотите удалить это?</v-flex>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

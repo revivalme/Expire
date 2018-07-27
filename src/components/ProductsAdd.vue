@@ -1,5 +1,6 @@
 <template lang="html">
-  <v-layout row justify-center>
+  <v-layout column justify-center>
+    <!-- <v-alert :value="warn" type="warning" transition="slide-y-transition">Такое имя уже существует.</v-alert> -->
     <v-flex xs12 sm7 md4>
       <v-flex mt-5>
         <v-layout row justify-center>
@@ -55,7 +56,9 @@ export default {
   data () {
     return {
       names: [],
-      name: ''
+      name: '',
+      warn: true,
+      warnCheck: true
     }
   },
   created () {
@@ -73,7 +76,12 @@ export default {
   },
   methods: {
     addName () {
-      if (this.name) {
+      this.names.forEach((name) => {
+        if (name === this.name) {
+          this.warnCheck = false
+        }
+      })
+      if (this.name && this.warnCheck) {
         this.db.collection('namesProducts-1-1').add({
           name: this.name
         })
@@ -89,6 +97,7 @@ export default {
           console.error('Error adding document: ', error)
         })
       }
+      this.warnCheck = true
     },
     deleteName (id) {
       this.db.collection('namesProducts-1-1').doc(id).delete()
@@ -101,3 +110,6 @@ export default {
   }
 }
 </script>
+<style lang="css">
+
+</style>

@@ -9,6 +9,7 @@ const routerOptions = [
   { path: '/home', component: 'Home', meta: { requiresAuth: true } },
   { path: '/productsadd', component: 'ProductsAdd', meta: { requiresAuth: true } },
   { path: '/productsreturn', component: 'ProductsReturn', meta: { requiresAuth: true } },
+  { path: '/historyproducts', component: 'HistoryProducts', meta: { requiresAuth: true } },
   { path: '*', component: 'NotFound' }
 ]
 
