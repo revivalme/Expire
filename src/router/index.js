@@ -6,7 +6,7 @@ const routerOptions = [
   { path: '/', component: 'Landing' },
   { path: '/signin', component: 'Signin' },
   { path: '/signup', component: 'Signup' },
-  { path: '/home', component: 'Home', meta: { requiresAuth: true } },
+  { path: '/home', component: 'Expire', meta: { requiresAuth: true } },
   { path: '/productsadd', component: 'ProductsAdd', meta: { requiresAuth: true } },
   { path: '/productsreturn', component: 'ProductsReturn', meta: { requiresAuth: true } },
   { path: '/historyproducts', component: 'HistoryProducts', meta: { requiresAuth: true } },

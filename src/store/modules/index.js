@@ -1,7 +1,7 @@
 import auth from './auth'
-import notes from './notes'
+import products from './products'
 
 export default {
   auth,
-  notes
+  products
 }
