@@ -1,5 +1,5 @@
 <template lang="html">
-  <v-layout column justify-center>
+  <v-layout column justify-center align-center>
     <!-- <v-alert :value="warn" type="warning" transition="slide-y-transition">Такое имя уже существует.</v-alert> -->
     <v-flex xs12 sm7 md4>
       <v-flex mt-5>

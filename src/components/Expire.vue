@@ -1,8 +1,8 @@
 <template lang="html">
   <v-layout align-space-around justify-center wrap row>
     <v-layout justify-center>
-      <v-flex (xs12 | sm12 | md8 | lg7 | xl5) class="text-xs-center" mt-5 mr-2 ml-2>
-        <v-card height="27rem">
+      <v-flex (xs12 | sm6 | md6 | lg4 | xl3) class="text-xs-center" mt-5 mr-2 ml-2>
+        <v-card height="32rem">
           <v-layout align-center column justify-center>
             <v-flex mt-4>
               <v-layout row justify-center>
@@ -27,7 +27,7 @@
               </v-layout>
             </v-flex>
             <v-form>
-              <v-layout row align-center>
+              <v-layout row align-center justify-content>
                 <v-autocomplete v-if="fieldChange"
                   label="Название"
                   :rules="[() => !!name || 'Заполните поле']"
@@ -40,6 +40,7 @@
                 <v-text-field v-else
                   label="Regular"
                   v-model="name"
+                  autofocus
                 ></v-text-field>
               </v-layout>
 
@@ -51,6 +52,13 @@
                 placeholder="Выберите..."
                 required
               ></v-autocomplete>
+
+              <v-select
+                :items="materials"
+                v-model="material"
+                label="Выберите..."
+                allow-overflow
+              ></v-select>
 
               <v-menu
                 :close-on-content-click="false"
@@ -100,6 +108,8 @@ export default {
       ],
       volume: null,
       names: [],
+      materials: ['Стекло', 'Пластик', 'Жестянка', 'Бумага', 'Термопакет'],
+      material: '',
       name: null,
       expirationDate: null,
       dateRules: [
@@ -146,6 +156,7 @@ export default {
           expirationDate: this.dateFormatted,
           name: this.name,
           volume: this.volume,
+          material: this.material,
           addDate: addDate
         })
         .then((docRef) => {
