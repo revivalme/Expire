@@ -59,7 +59,9 @@ export default {
       names: [],
       name: '',
       warn: true,
-      warnCheck: true
+      warnCheck: true,
+      store: localStorage.store,
+      department: localStorage.department
     }
   },
   created () {
