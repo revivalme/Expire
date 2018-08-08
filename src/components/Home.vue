@@ -57,6 +57,18 @@ export default {
       department: null
     }
   },
+  created () {
+    this.store = localStorage.store ? this.stores[Number(localStorage.store) - 1] : null
+    this.department = localStorage.department ? this.departments[Number(localStorage.department) - 1] : null
+  },
+  computed: {
+    checkStore () {
+      return localStorage.store ? this.stores[Number(localStorage.store) - 1] : null
+    },
+    checkDepartment () {
+      return localStorage.department ? this.departments[Number(localStorage.department) - 1] : null
+    }
+  },
   methods: {
     onButton () {
       if (this.store && this.department) {
