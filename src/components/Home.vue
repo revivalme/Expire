@@ -1,6 +1,6 @@
 <template lang="html">
   <v-layout justify-center>
-      <v-flex xs12 sm8 md5 mt-5 lg4 ml-4 mr-4>
+      <v-flex xs12 sm8 md5 lg3 mt-5 ml-4 mr-4>
         <v-card>
           <v-card-media
             src="https://firebasestorage.googleapis.com/v0/b/neten-40082.appspot.com/o/expire.jpg?alt=media&token=2d596a59-8e9b-49a0-ae41-eee9ef4682f7"
@@ -11,7 +11,7 @@
             <v-card-title primary-title>
               <v-layout justify-center column align-center>
                 <h3 class="headline mb-0">Выберите магазин и отдел</h3>
-                <v-flex mt-3>
+                <v-flex mt-2>
                   <v-layout align-around>
                     <v-flex xs12 mr-1>
                       <v-select
@@ -33,11 +33,13 @@
             </v-card-title>
           </v-flex>
 
-          <v-flex pb-3>
+          <v-flex pb-2>
             <v-layout justify-end>
-              <v-card-actions>
-                <v-btn right dark color="green">Войти</v-btn>
-              </v-card-actions>
+              <router-link :to="store && department ? '/expire' : ''" tag="span">
+                <v-card-actions>
+                  <v-btn right dark color="blue" @click="onButton">Войти</v-btn>
+                </v-card-actions>
+              </router-link>
             </v-layout>
           </v-flex>
         </v-card>
@@ -49,10 +51,31 @@
 export default {
   data () {
     return {
-      stores: ['Магазин X', 'Магазин Z', 'Магазин Y'],
-      departments: ['Отдел X', 'Отдел Z', 'Отдел Y'],
+      stores: ['Магазин 1', 'Магазин 2', 'Магазин 3'],
+      departments: ['Отдел 1', 'Отдел 2', 'Отдел 3'],
       store: null,
       department: null
+    }
+  },
+  methods: {
+    onButton () {
+      if (this.store && this.department) {
+        let localStore, localDepartment
+
+        this.stores.forEach((element, i) => {
+          if (element === this.store) {
+            localStore = ++i
+          }
+        })
+        this.departments.forEach((element, i) => {
+          if (element === this.department) {
+            localDepartment = ++i
+          }
+        })
+
+        localStorage.store = localStore
+        localStorage.department = localDepartment
+      }
     }
   }
 }

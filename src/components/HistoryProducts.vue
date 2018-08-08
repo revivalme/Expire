@@ -3,7 +3,7 @@
     <delete-dialog v-if="deleteBoolProp" @dialog-delete="onDialogDelete" :delete-item="deleteBoolProp"></delete-dialog>
     <v-flex (xs12 | sm12 | md8 | lg6 |  xl5) mt-5 ml-2 mr-2>
       <v-layout justify-center>
-        <router-link to="/home" tag="span">
+        <router-link to="/expire" tag="span">
           <v-btn icon ripple>
             <v-icon medium color="grey darken-1"> keyboard_return </v-icon>
           </v-btn>
@@ -59,14 +59,16 @@ export default {
     return {
       products: [],
       deleteBoolProp: false,
-      idProductItem: ''
+      idProductItem: '',
+      store: localStorage.store,
+      department: localStorage.department
     }
   },
   components: {
     deleteDialog
   },
   created () {
-    this.db.collection('department-1-1').get()
+    this.db.collection(`department-${this.store}-${this.department}`).get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         let localproducts = doc.data()
@@ -96,7 +98,7 @@ export default {
   },
   methods: {
     deleteOne (id) {
-      this.db.collection('department-1-1').doc(id).delete()
+      this.db.collection(`department-${this.store}-${this.department}`).doc(id).delete()
       this.products.forEach((product, index) => {
         if (product.id === id) {
           this.products.splice(index, 1)
@@ -116,7 +118,7 @@ export default {
       this.deleteBoolProp = false
     },
     deleteTwo () {
-      this.db.collection('department-1-1').doc(this.idProductItem).delete()
+      this.db.collection(`department-${this.store}-${this.department}`).doc(this.idProductItem).delete()
       this.products.forEach((product, index) => {
         if (product.id === this.idProductItem) {
           this.products.splice(index, 1)
@@ -126,7 +128,7 @@ export default {
     },
     addInReturnComp (product) {
       product.deleteDate = new Date()
-      this.db.collection('productsreturn-1-1').add(product)
+      this.db.collection(`productsreturn-${this.store}-${this.department}`).add(product)
     }
   }
 }

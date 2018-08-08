@@ -1,8 +1,8 @@
 <template lang="html">
   <v-layout align-space-around justify-center wrap row>
     <v-layout justify-center>
-      <v-flex (xs12 | sm6 | md6 | lg4 | xl3) class="text-xs-center" mt-5 mr-2 ml-2>
-        <v-card height="32rem">
+      <v-flex (xs10 | sm6 | md4 | lg3 | xl2) class="text-xs-center" mt-5 mr-2 ml-2>
+        <v-card height="22rem">
           <v-layout align-center column justify-center>
             <v-flex mt-4>
               <v-layout row justify-center>
@@ -43,22 +43,6 @@
                   autofocus
                 ></v-text-field>
               </v-layout>
-
-              <v-autocomplete
-                label="Объём"
-                :rules="[() => !!volume || 'Заполните поле']"
-                :items="volumes"
-                v-model="volume"
-                placeholder="Выберите..."
-                required
-              ></v-autocomplete>
-
-              <v-select
-                :items="materials"
-                v-model="material"
-                label="Выберите..."
-                allow-overflow
-              ></v-select>
 
               <v-menu
                 :close-on-content-click="false"
@@ -101,15 +85,7 @@
 export default {
   data () {
     return {
-      volumes: [
-        '5л', '3л', '2.25л', '2л', '1.93л', '1.75л', '1.5л', '1.25л',
-        '1л', '0.97л', '0.95л', '0.9л', '0.75л', '0.6л', '0.5л', '0.48л',
-        '0.45л', '0.355л', '0.33л', '0.3л', '0.25л', '0.2л'
-      ],
-      volume: null,
       names: [],
-      materials: ['Стекло', 'Пластик', 'Жестянка', 'Бумага', 'Термопакет'],
-      material: '',
       name: null,
       expirationDate: null,
       dateRules: [
@@ -120,11 +96,13 @@ export default {
       dateFormatted: null,
       menu1: false,
       menu2: false,
-      fieldChange: false
+      fieldChange: false,
+      store: localStorage.store,
+      department: localStorage.department
     }
   },
   created () {
-    this.db.collection('namesProducts-1-1').get()
+    this.db.collection(`namesProducts-${this.store}-${this.department}`).get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         let localname = doc.data()
@@ -149,20 +127,17 @@ export default {
       return `${day}.${month}.${year}`
     },
     submit () {
-      if (this.volume && this.name && this.dateFormatted) {
+      if (this.name && this.dateFormatted) {
         let addDate = new Date()
 
-        this.db.collection('department-1-1').add({
+        this.db.collection(`department-${this.store}-${this.department}`).add({
           expirationDate: this.dateFormatted,
           name: this.name,
-          volume: this.volume,
-          material: this.material,
           addDate: addDate
         })
         .then((docRef) => {
           this.date = null
           this.name = null
-          this.volume = null
           console.log('Document written with ID: ', docRef.id)
         })
         .catch((error) => {

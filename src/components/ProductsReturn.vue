@@ -3,7 +3,7 @@
     <v-flex xs12>
       <v-flex xs12 mt-5>
         <v-layout justify-center>
-          <router-link to="/home" tag="span">
+          <router-link to="/expire" tag="span">
             <v-btn icon ripple>
               <v-icon medium color="grey darken-1"> keyboard_return </v-icon>
             </v-btn>
@@ -43,14 +43,16 @@
 export default {
   data () {
     return {
-      products: []
+      products: [],
+      store: localStorage.store,
+      department: localStorage.department
     }
   },
   created () {
     let localProducts = []
     let secondsArr = []
 
-    this.db.collection('productsreturn-1-1').get()
+    this.db.collection(`productsreturn-${this.store}-${this.department}`).get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         let localProduct = doc.data()
@@ -72,7 +74,7 @@ export default {
         if (product.deleteDate.seconds >= secondsArr[9] || localProducts.length <= 9) {
           this.products.push(product)
         } else if (product.deleteDate.seconds <= secondsArr[9]) {
-          this.db.collection('productsreturn-1-1').doc(product.id).delete()
+          this.db.collection(`productsreturn-${this.store}-${this.department}`).doc(product.id).delete()
         }
       })
     })
@@ -84,8 +86,8 @@ export default {
     returnProduct (id) {
       this.products.forEach((product, i) => {
         if (product.id === id) {
-          this.db.collection('department-1-1').add(product)
-          this.db.collection('productsreturn-1-1').doc(id).delete()
+          this.db.collection(`department-${this.store}-${this.department}`).add(product)
+          this.db.collection(`productsreturn-${this.store}-${this.department}`).doc(id).delete()
           this.products.splice(i, 1)
         }
       })

@@ -8,6 +8,17 @@ export default {
     error: null,
     loading: false
   },
+  mutations: {
+    [SET_USER] (state, payload) {
+      state.user = payload
+    },
+    [SET_ERROR] (state, payload) {
+      state.error = payload
+    },
+    [SET_LOADING] (state, payload) {
+      state.loading = payload
+    }
+  },
   actions: {
     userSignUp ({commit}, payload) {
       commit('SET_LOADING', true)
@@ -43,17 +54,6 @@ export default {
       firebase.auth().signOut()
       commit('SET_USER', null)
       router.push('/')
-    }
-  },
-  mutations: {
-    [SET_USER] (state, payload) {
-      state.user = payload
-    },
-    [SET_ERROR] (state, payload) {
-      state.error = payload
-    },
-    [SET_LOADING] (state, payload) {
-      state.loading = payload
     }
   },
   getters: {

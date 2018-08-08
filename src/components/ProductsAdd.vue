@@ -14,15 +14,16 @@
           <v-flex offset-(xs12 | sm7 | md7 | lg2)>
             <v-layout>
               <v-flex mt-1>
-                <router-link to="/home" tag="span">
+                <router-link to="/expire" tag="span">
                   <v-btn icon ripple>
                     <v-icon medium color="grey darken-1"> keyboard_return </v-icon>
                   </v-btn>
                 </router-link>
               </v-flex>
               <v-btn
-                color="primary"
+                color="blue"
                 large
+                dark
                 @click="addName">
                 Добавить
               </v-btn>
@@ -62,7 +63,7 @@ export default {
     }
   },
   created () {
-    this.db.collection('namesProducts-1-1').get()
+    this.db.collection(`namesProducts-${this.store}-${this.department}`).get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         let localNames = doc.data()
@@ -82,7 +83,7 @@ export default {
         }
       })
       if (this.name && this.warnCheck) {
-        this.db.collection('namesProducts-1-1').add({
+        this.db.collection(`namesProducts-${this.store}-${this.department}`).add({
           name: this.name
         })
         .then((docRef) => {
@@ -100,7 +101,7 @@ export default {
       this.warnCheck = true
     },
     deleteName (id) {
-      this.db.collection('namesProducts-1-1').doc(id).delete()
+      this.db.collection(`namesProducts-${this.store}-${this.department}`).doc(id).delete()
       this.names.forEach((name, index) => {
         if (name.id === id) {
           this.names.splice(index, 1)
@@ -110,6 +111,3 @@ export default {
   }
 }
 </script>
-<style lang="css">
-
-</style>

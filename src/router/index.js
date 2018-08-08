@@ -6,11 +6,11 @@ const routerOptions = [
   { path: '/', component: 'Landing' },
   { path: '/signin', component: 'Signin' },
   { path: '/signup', component: 'Signup' },
-  { path: '/Home', component: 'Home', meta: { requiresAuth: true } },
-  { path: '/expire', component: 'Expire', meta: { requiresAuth: true } },
-  { path: '/productsadd', component: 'ProductsAdd', meta: { requiresAuth: true } },
-  { path: '/productsreturn', component: 'ProductsReturn', meta: { requiresAuth: true } },
-  { path: '/historyproducts', component: 'HistoryProducts', meta: { requiresAuth: true } },
+  { path: '/home', component: 'Home', meta: { requiresAuth: true } },
+  { path: '/expire', component: 'Expire', meta: { requiresAuth: true, department: true, store: true } },
+  { path: '/productsadd', component: 'ProductsAdd', meta: { requiresAuth: true, department: true, store: true } },
+  { path: '/productsreturn', component: 'ProductsReturn', meta: { requiresAuth: true, department: true, store: true } },
+  { path: '/historyproducts', component: 'HistoryProducts', meta: { requiresAuth: true, department: true, store: true } },
   { path: '*', component: 'NotFound' }
 ]
 
@@ -33,6 +33,18 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = firebase.auth().currentUser
   if (requiresAuth && !isAuthenticated) {
     next('/signin')
+  } else {
+    next()
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.store && record.meta.department)) {
+    if (!localStorage.store && !localStorage.department) {
+      next('/home')
+    } else {
+      next()
+    }
   } else {
     next()
   }
