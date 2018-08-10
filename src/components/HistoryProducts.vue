@@ -83,15 +83,15 @@ export default {
   computed: {
     items () {
       return this.products.filter((product) => {
-        let dateNow = Date.parse(new Date())
-        let dateExpire = Date.parse(`${product.expirationDate}`)
+        const dateNow = Date.parse(new Date())
+        const dateExpire = Date.parse(`${product.expirationDate}`)
         return dateNow > dateExpire
       })
     },
     items2 () {
       return this.products.filter((product) => {
-        let dateNow = Date.parse(new Date())
-        let dateExpire = Date.parse(`${product.expirationDate}`)
+        const dateNow = Date.parse(new Date())
+        const dateExpire = Date.parse(`${product.expirationDate}`)
         return dateNow < dateExpire
       })
     }
@@ -111,7 +111,6 @@ export default {
       this.idProductItem = id
     },
     onDialogDelete (deleteBool) {
-      console.log(deleteBool)
       if (deleteBool === true) {
         this.deleteTwo()
       }
@@ -133,6 +132,3 @@ export default {
   }
 }
 </script>
-
-<style lang="css">
-</style>

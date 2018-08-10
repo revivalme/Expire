@@ -105,7 +105,7 @@ export default {
     this.db.collection(`namesProducts-${this.store}-${this.department}`).get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
-        let localname = doc.data()
+        const localname = doc.data()
         this.names.push(localname.name)
       })
     })
@@ -128,7 +128,7 @@ export default {
     },
     submit () {
       if (this.name && this.dateFormatted) {
-        let addDate = new Date()
+        const addDate = new Date()
 
         this.db.collection(`department-${this.store}-${this.department}`).add({
           expirationDate: this.dateFormatted,
